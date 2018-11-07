@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('topic_name', help='the kafka topic push to')
     parser.add_argument('kafka_broker', help='the location of the kafka broker')
-    
+
     # Parse arguments
     args = parser.parse_args()
     topic_name = args.topic_name
