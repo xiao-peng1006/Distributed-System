@@ -1,8 +1,8 @@
 import argparse
 import atexit
 import json
-import happybase
 import logging
+import happybase
 
 from kafka import KafkaConsumer
 

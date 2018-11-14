@@ -27,14 +27,16 @@ def process_stream(stream, kafka_producer, target_topic):
             data = json.dumps({
                 'Symbol': r[0],
                 'Timestamp': time.time(),
-                'Average': r[1]})
+                'Min': r[1]}
+                )
         try:
-            logger.info('Sending average price %s to kafka', data)
+            logger.info('Sending minimum price %s to kafka', data)
             kafka_producer.send(target_topic, value=data.encode('utf-8'))
         except KafkaError as error:
-            logger.warn('Failed to send average price to kafka: ', error.message)
+            logger.warn('Failed to send minimum price to kafka: ', error.message)
 
-    stream.map(pair).reduceByKey(lambda a, b: (a[0] + b[0], a[1] + b[1])).map(lambda kv: (kv[0], kv[1][0]/kv[1][1])).forEachRDD(send_to_kafka)
+    # stream.map(pair).reduceByKey(lambda a, b: (a[0] + b[0], a[1] + b[1])).map(lambda kv: (kv[0], kv[1][0]/kv[1][1])).forEachRDD(send_to_kafka)
+    stream.map(pair).map(min).forEachRDD(send_to_kafka)
 
 def shutdown_hook(producer):
     """
