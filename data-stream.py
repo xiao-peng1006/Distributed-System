@@ -34,7 +34,7 @@ def process_stream(stream, kafka_producer, target_topic):
         except KafkaError as error:
             logger.warn('Failed to send average price to kafka: ', error.message)
 
-    stream.map(pair).reduceByKey(lambda a, b: (a[0] + b[0], a[1] + b[1])).map(lambda kv: (kv[0], kv[1][0]/kv[1][1])).forEachRDD(send_to_kafka)
+    stream.map(pair).reduceByKey(lambda a, b: (a[0] + b[0], a[1] + b[1])).map(lambda kv: (kv[0], kv[1][0]/kv[1][1])).foreachRDD(send_to_kafka)
 
 def shutdown_hook(producer):
     """
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     source_topic = args.source_topic
     target_topic = args.target_topic
     kafka_broker = args.kafka_broker
-    batch_duration = args.batch_duration
+    batch_duration = int(args.batch_duration)
 
     # Create SparkContext and StreamingContext
     sc = SparkContext("local[2]", "AveragePrice")
