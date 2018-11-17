@@ -39,6 +39,8 @@ def test_data_stream(sc, ssc, topic):
 
     assert math.isclose(json.loads(kwargs['value'])['Average'], 14000.0, rel_tol=1e-10)
 
+    print('test_data_stream passed!')
+
 if __name__ == '__main__':
     sc = SparkContext('local[2]', 'local-testing')
     ssc = StreamingContext(sc, 10)

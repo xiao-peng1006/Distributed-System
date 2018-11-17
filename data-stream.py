@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     # Create SparkContext and StreamingContext
     sc = SparkContext("local[2]", "AveragePrice")
-    sc.setLevel('INFO')
+    sc.setLogLevel('INFO')
     ssc = StreamingContext(sc, batch_duration)
 
     # Instantiate a kafka stream for processing
